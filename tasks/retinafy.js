@@ -12,6 +12,8 @@ module.exports = function(grunt) {
 	var im = require('node-imagemagick');
 	var async = require('async');
 	var path = require('path');
+	var os = require('os');
+	var numCPUs = os.cpus().length;
 	var r_percentage = /([0-9]+)%$/; // Percentage matching.
 
 	/**
@@ -64,14 +66,15 @@ module.exports = function(grunt) {
 	grunt.registerMultiTask('retinafy', 'Take the 2x images and generate retina and regular versions', function() {
 		var done = this.async();
 		var options = this.options({
-			sizes: {}
+			sizes: {},
+			asyncLimit: numCPUs - 1 || 1
 		});
 
 		// Convert sizes to something more readable.
 		options.sizes = convertSizes(options.sizes);
 
 		// For each file asynchronously read it and do other stuff.
-		async.each(this.files, function(f, callback) {
+		async.eachLimit(this.files, options.asyncLimit, function(f, callback) {
 			var extName = path.extname(f.dest),
 				srcPath = f.src[0],
 				dirName = path.dirname(f.dest),
@@ -86,7 +89,7 @@ module.exports = function(grunt) {
 				}
 
 				// For each size, resize the image.
-				async.each(options.sizes, function(size, callback) {
+				async.eachLimit(options.sizes, 1, function(size, callback) {
 					var dstPath = dirName + "/" + baseName + size.settings.suffix + extName;
 					var destImageSize = processSize(size.size, features);
 
