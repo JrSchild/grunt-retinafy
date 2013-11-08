@@ -77,7 +77,7 @@ module.exports = function(grunt) {
 						grunt.file.mkdir(dirName);
 					}
 
-					dstPath = path.join(dirName, baseName + size + extName);
+					dstPath = path.join(dirName, baseName + imagePath.file + extName);
 
 					var dest = options.sizes[size];
 					var destImageSize = processSize(size, currImageSize);
