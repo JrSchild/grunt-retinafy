@@ -1,4 +1,4 @@
-# grunt-retinafy
+# grunt-retinafy v0.1.1
 
 > Take the 2x images and generate retina and regular versions
 
@@ -28,7 +28,7 @@ grunt.initConfig({
     options: {
       // Task-specific options go here.
     },
-    your_target: {
+    files: {
       // Target-specific file lists and/or options go here.
     },
   },
@@ -37,50 +37,48 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
-Type: `String`
+#### options.sizes
+Type: `Object`
 Default value: `',  '`
 
-A string value that is used to do something with whatever.
+An object with in the key a percentage based value like `"50%"` for the image to scale to. And in the value an object with the key suffix that will define what will be appended to the end of the filename. Example: `"50%": { suffix: '@1x' }`
 
-#### options.punctuation
-Type: `String`
-Default value: `'.'`
 
-A string value that is used to do something else with whatever else.
+#### options.asyncLimit
+Type: `integer`
+Default value: number of CPU's - 1
+
+Grunt-retinafy tries to optimize the speed by asynchronously scaling images. You can force the program to use more than the default amount (for your system) of asynchronous actions.
+
+Getting the error message: `Fatal error: Cannot call method 'match' of undefined`? Try using a lower number here and see what works most optimal for your system.
+
+
 
 ### Usage Examples
 
 #### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
-
-```js
-grunt.initConfig({
-  retinafy: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-})
-```
-
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
+In this example, all the images with extension jpg, gif and png present in the folder and subfolder of test/default_options will be placed in three different sizes inside tmp/default_options. The same folder structure will be kept intact.
 
 ```js
 grunt.initConfig({
   retinafy: {
     options: {
-      separator: ': ',
-      punctuation: ' !!!',
+      sizes: {
+        '50%':  { suffix: '@1x' },
+        '75%':  { suffix: '@1.5x' },
+        '100%': { suffix: '@2x' }
+      }
     },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
+    files: [{
+      expand: true,
+      cwd: 'test/default_options',
+      src: ['**/*.{jpg,gif,png}'],
+      dest: 'tmp/default_options'
+    }],
   },
 })
 ```
+
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
