@@ -33,16 +33,30 @@ module.exports = function(grunt) {
 			default_options: {
 				options: {
 					sizes: {
-						'50%': '1x/${name}@1x',
-						'75%': '1.5x/${name}@1.5x',
-						'100%': '2x/${name}@2x'
+						'50%':	{ suffix: '@1x' },
+						'75%':	{ suffix: '@1.5x' },
+						'100%': { suffix: '@2x' }
 					}
 				},
 				files: [{
 					expand: true,
-					cwd: 'test/fixtures',
+					cwd: 'test/default_options',
 					src: ['**.{jpg,gif,png}'],
 					dest: 'tmp/default_options'
+				}]
+			},
+			keep_structure: {
+				options: {
+					sizes: {
+						'50%':	{ suffix: '@1x' },
+						'100%': { suffix: '@2x' }
+					}
+				},
+				files: [{
+					expand: true,
+					cwd: 'test/keep_structure',
+					src: ['**/*.{jpg,gif,png}'],
+					dest: 'tmp/keep_structure'
 				}],
 			}
 		},

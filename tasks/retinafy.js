@@ -9,78 +9,83 @@
 'use strict';
 
 module.exports = function(grunt) {
-
 	var im = require('node-imagemagick');
 	var async = require('async');
 	var path = require('path');
 
+	// cache regexes.
+	var r_percentage = /([0-9]+)%$/;
+
+	/**
+	 * Process the targetsize to an object suitable for imagemagick
+	 */
+	function processSize(targetSize, currSize) {
+		var match = (targetSize.match(r_percentage) || [])[1];
+		var sizes;
+
+		if (match /= 100) {
+			sizes = {
+				width: currSize.width * match,
+				height: 0
+			};
+			return sizes;
+		}
+	}
+
+	/**
+	 * In order to do async.each we have to iterate over an array
+	 * Turn the sizes array into an array of objects.
+	 * @return {Object}
+	 */
+	function convertSizes(sizes) {
+		var tmp = [];
+		for (var size in sizes) {
+			tmp.push({
+				size: size,
+				settings: sizes[size]
+			});
+		}
+		return tmp;
+	}
+
+	function whenReady(callback) {
+		return function(err) {
+			if (err) {
+				throw err;
+			}
+			callback();
+		}
+	}
+
 	grunt.registerMultiTask('retinafy', 'Take the 2x images and generate retina and regular versions', function() {
 		var done = this.async();
-
-		// Merge task-specific and/or target-specific options with these defaults.
+		var series = [];
 		var options = this.options({
 			sizes: {}
 		});
 
-		// cache regexes.
-		var r_percentage = /([0-9]+)%$/;
-		function processSize(targetSize, currSize) {
-			var match = (targetSize.match(r_percentage) || [])[1];
-			var sizes;
+		// Convert sizes to something more readable.
+		options.sizes = convertSizes(options.sizes);
 
-			if (match /= 100) {
-				sizes = {
-					width: currSize.width * match,
-					height: 0
-				}
-				return sizes;
-			}
-		}
-
-		function getPathTo(image, name) {
-			var parts = image.split('/');
-			var path = {};
-
-			path.file = parts.slice(-1)[0].replace('${name}', name);
-			if (parts.length > 1) {
-				path.path = '/' + parts.slice(0, -1).join('/');
-			}
-
-			return path;
-		}
-
-		this.files.forEach(function(f) {
+		async.each(this.files, function(f, callback) {
 			var extName = path.extname(f.dest),
 				srcPath = f.src[0],
-				baseName = path.basename(srcPath, extName), // filename without extension
-				dirName,
-				dstPath;
+				dirName = path.dirname(f.dest),
+				baseName = path.basename(srcPath, extName); // filename without extension
 
-			// First get the dimensions of the file.
+			// get file info...
 			im.identify(f.src[0], function(err, features) {
-				if (err) {
-					throw err;
+
+				// Make directory if it doesn't exist.
+				if (!grunt.file.isDir(dirName)) {
+					grunt.file.mkdir(dirName);
 				}
 
-				var currImageSize = {
-					width: features.width,
-					height: features.height
-				}
-
-				for (var size in options.sizes) {
-					var imagePath = getPathTo(options.sizes[size], baseName);
-
-					dirName = path.dirname(f.dest) + imagePath.path;
-
-					// Make directory if it doesn't exist.
-					if (!grunt.file.isDir(dirName)) {
-						grunt.file.mkdir(dirName);
-					}
-
-					dstPath = path.join(dirName, baseName + imagePath.file + extName);
-
-					var dest = options.sizes[size];
-					var destImageSize = processSize(size, currImageSize);
+				// For each size resize the image.
+				async.each(options.sizes, function(size, callback) {
+					// var dstPath = path.join(dirName, baseName, size.settings.suffix, extName);
+					var dstPath = dirName + "/" + baseName + size.settings.suffix + extName;
+					var destImageSize = processSize(size.size, features);
 
 					im.resize({
 						srcPath: srcPath,
@@ -88,16 +93,10 @@ module.exports = function(grunt) {
 						format: extName.replace('.', ''),
 						width: destImageSize.width,
 						height: destImageSize.height
-					}, function(err, stdout, stderr) {
-						if (err) {
-							throw err;
-						}
-					});
-
-				}
-			}); /** /Identify */
-
-		}); /** /files.forEach */
+					}, whenReady(callback));
+				}, whenReady(callback));
+			});
+		}, done);
 
 	}); /** /registerMultiTask */
 
