@@ -32,7 +32,7 @@
     "grunt-contrib-nodeunit": "~0.2.0",
     "grunt": "~0.4.1",
     "node-imagemagick": "~0.1.8",
-    "async": "~0.2.8"
+    "async": "~0.2.9"
   },
   "peerDependencies": {
     "grunt": "~0.4.1"
