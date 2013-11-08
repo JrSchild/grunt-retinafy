@@ -60,7 +60,7 @@ module.exports = function(grunt) {
 				throw err;
 			}
 			callback();
-		}
+		};
 	}
 
 	grunt.registerMultiTask('retinafy', 'Take the 2x images and generate retina and regular versions', function() {
