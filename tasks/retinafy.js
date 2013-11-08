@@ -83,7 +83,6 @@ module.exports = function(grunt) {
 
 				// For each size resize the image.
 				async.each(options.sizes, function(size, callback) {
-					// var dstPath = path.join(dirName, baseName, size.settings.suffix, extName);
 					var dstPath = dirName + "/" + baseName + size.settings.suffix + extName;
 					var destImageSize = processSize(size.size, features);
 
@@ -96,7 +95,7 @@ module.exports = function(grunt) {
 					}, whenReady(callback));
 				}, whenReady(callback));
 			});
-		}, done);
+		}, whenReady(done));
 
 	}); /** /registerMultiTask */
 
