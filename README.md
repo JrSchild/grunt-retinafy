@@ -1,4 +1,4 @@
-# grunt-retinafy v0.1.2
+# grunt-retinafy v0.1.3
 
 > Take the 2x images and generate retina and regular versions
 
@@ -41,7 +41,9 @@ grunt.initConfig({
 Type: `Object`
 Default value: `',  '`
 
-An object with in the key a percentage based value like `"50%"` for the image to scale to. And in the value an object with the key suffix that will define what will be appended to the end of the filename. Example: `"50%": { suffix: '@1x' }`
+An object with in each key the target size of your images. This could either be a fixed value or percentage. Possible values: `50%`, `w100`, `h80`. When both a height and width is specified (`w50h80`) the image will be scaled to it's biggest possible size inside these values without stretching it.
+
+The value of each item should be an object with a key suffix. The suffix will be appended to the filename before the extension. Example: `"50%": { suffix: '@1x' }`
 
 
 #### options.asyncLimit
@@ -50,8 +52,7 @@ Default value: number of CPU's - 1
 
 Grunt-retinafy tries to optimize the speed by asynchronously scaling images. You can force the program to use more than the default amount (for your system) of asynchronous actions.
 
-Getting the error message: `Fatal error: Cannot call method 'match' of undefined`? Try using a lower number here and see what works most optimal for your system.
-
+Getting the error message: `Fatal error: Cannot call method 'match' of undefined`? It's very possible that your system can't handle the amount of async actions. Try filling in a 1 in the options and slowly work your way up to the get the best performance for your system.
 
 
 ### Usage Examples
@@ -79,6 +80,31 @@ grunt.initConfig({
 })
 ```
 
+#### Fixed width and/or height
+All specified files will be resized to three images, one with a width of 50px and one with a height of 70px, the last one will have a maximum of 80px x 90px. That image will have the highest possible resolution within those numbers. The image won't be stretched.
+
+```js
+grunt.initConfig({
+  retinafy: {
+    options: {
+      sizes: {
+        'w50':    { suffix: '@w50' },
+        'h70':    { suffix: '@h70' },
+        'w80h90': { suffix: '@w80h90' }
+      }
+    },
+    files: [{
+      // File options go here
+    }],
+  },
+})
+```
+
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
+
+## Release History
+* 2013-11-09   v0.1.3   Support for fixed width and/or height.
+* 2013-10-09   v0.1.2   Use the amount of CPU's - 1 as the amount of parallel resize functions.
+* 2013-10-09   v0.1.1   Using async to manage the resize methods. Change in API, in sizes now using an object with options for this size.
