@@ -89,7 +89,7 @@ module.exports = function(grunt) {
 				}
 
 				// For each size, resize the image.
-				async.eachLimit(options.sizes, 1, function(size, callback) {
+				async.eachSeries(options.sizes, function(size, callback) {
 					var dstPath = dirName + "/" + baseName + size.settings.suffix + extName,
 						destImageSize = processSize(size.size, features);
 
