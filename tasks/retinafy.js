@@ -1,8 +1,8 @@
 /*
  * grunt-retinafy
- * https://github.com/laurentvd/grunt-retinafy
+ * https://github.com/JrSchild/grunt-retinafy
  *
- * Copyright (c) 2013 Laurent van Dommelen
+ * Copyright (c) 2013 Joram Ruitenschild
  * Licensed under the MIT license.
  */
 

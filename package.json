@@ -2,21 +2,21 @@
   "name": "grunt-retinafy",
   "description": "Take the 2x images and generate retina and regular versions",
   "version": "0.1.2",
-  "homepage": "https://github.com/laurentvd/grunt-retinafy",
+  "homepage": "https://github.com/JrSchild/grunt-retinafy",
   "author": {
-    "name": "Laurent van Dommelen & Joram Ruitenschild"
+    "name": "Joram Ruitenschild"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/laurentvd/grunt-retinafy.git"
+    "url": "https://github.com/JrSchild/grunt-retinafy.git"
   },
   "bugs": {
-    "url": "https://github.com/laurentvd/grunt-retinafy/issues"
+    "url": "https://github.com/JrSchild/grunt-retinafy/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/laurentvd/grunt-retinafy/blob/master/LICENSE"
+      "url": "https://github.com/JrSchild/grunt-retinafy/blob/master/LICENSE"
     }
   ],
   "main": "Gruntfile.js",
