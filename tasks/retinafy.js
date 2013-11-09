@@ -14,7 +14,9 @@ module.exports = function(grunt) {
 		path = require('path'),
 		os = require('os'),
 		numCPUs = os.cpus().length,
-		r_percentage = /([0-9]+)%$/; // Percentage matching.
+		r_percentage = /([0-9]+)%$/, // Percentage matching.
+		r_width = /w([0-9]+)/, // Width matching.
+		r_height = /h([0-9]+)/; // Height matching.
 
 	/**
 	 * Process the size, return object of new size.
@@ -27,6 +29,11 @@ module.exports = function(grunt) {
 			return {
 				width: origSize.width * match,
 				height: 0
+			};
+		} else {
+			return {
+				width: (targetSize.match(r_width) || [])[1] || 0,
+				height: (targetSize.match(r_height) || [])[1] || 0
 			};
 		}
 	}

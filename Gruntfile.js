@@ -58,6 +58,21 @@ module.exports = function(grunt) {
 					src: ['**/*.{jpg,gif,png}'],
 					dest: 'tmp/keep_structure'
 				}],
+			},
+			fixed_proportions: {
+				options: {
+					sizes: {
+						'w50':		{ suffix: '@w50' },
+						'h70':		{ suffix: '@h70' },
+						'w80h90':	{ suffix: '@w80h90' }
+					}
+				},
+				files: [{
+					expand: true,
+					cwd: 'test/default_options',
+					src: ['**/*.{jpg,gif,png}'],
+					dest: 'tmp/fixed_proportions'
+				}],
 			}
 		},
 
