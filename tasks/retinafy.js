@@ -9,12 +9,12 @@
 'use strict';
 
 module.exports = function(grunt) {
-	var im = require('node-imagemagick');
-	var async = require('async');
-	var path = require('path');
-	var os = require('os');
-	var numCPUs = os.cpus().length;
-	var r_percentage = /([0-9]+)%$/; // Percentage matching.
+	var im = require('node-imagemagick'),
+		async = require('async'),
+		path = require('path'),
+		os = require('os'),
+		numCPUs = os.cpus().length,
+		r_percentage = /([0-9]+)%$/; // Percentage matching.
 
 	/**
 	 * Process the size, return object of new size.
@@ -64,11 +64,11 @@ module.exports = function(grunt) {
 	}
 
 	grunt.registerMultiTask('retinafy', 'Take the 2x images and generate retina and regular versions', function() {
-		var done = this.async();
-		var options = this.options({
-			sizes: {},
-			asyncLimit: numCPUs - 1 || 1
-		});
+		var done = this.async(),
+			options = this.options({
+				sizes: {},
+				asyncLimit: numCPUs - 1 || 1
+			});
 
 		// Convert sizes to something more readable.
 		options.sizes = convertSizes(options.sizes);
@@ -80,7 +80,7 @@ module.exports = function(grunt) {
 				dirName = path.dirname(f.dest),
 				baseName = path.basename(srcPath, extName); // filename without extension
 
-			// get file info.
+			// Get file info.
 			im.identify(srcPath, function(err, features) {
 
 				// Make directory if it doesn't exist.
@@ -90,8 +90,8 @@ module.exports = function(grunt) {
 
 				// For each size, resize the image.
 				async.eachLimit(options.sizes, 1, function(size, callback) {
-					var dstPath = dirName + "/" + baseName + size.settings.suffix + extName;
-					var destImageSize = processSize(size.size, features);
+					var dstPath = dirName + "/" + baseName + size.settings.suffix + extName,
+						destImageSize = processSize(size.size, features);
 
 					im.resize({
 						srcPath: srcPath,
