@@ -1,4 +1,4 @@
-# grunt-retinafy v0.1.3
+# grunt-retinafy v0.1.4
 
 > Take the 2x images and generate retina and regular versions
 
@@ -43,11 +43,11 @@ Default value: `',  '`
 
 An object with in each key the target size of your images. This could either be a fixed value or percentage. Possible values: `50%`, `w100`, `h80`. When both a height and width is specified (`w50h80`) the image will be scaled to it's biggest possible size inside these values without stretching it.
 
-The value of each item should be an object with a key suffix and/or prefix. The suffix will be appended to the filename before the extension. Example: `"50%": { suffix: '@1x' }`. The prefix will be prepended to the filename. If this ens with a slash a subfolder will be created for this file. Examples: `"75%": { prefix: '1.5x' }`, `"75%": { prefix: '1.5x/' }`
+The value of each item should be an object with a key suffix and/or prefix. The suffix will be appended to the filename before the extension. Example: `"50%": { suffix: '@1x' }`. The prefix will be prepended to the filename. If this ends with a slash, a subfolder will be created for this file. Examples: `"75%": { prefix: '1.5x' }`, `"75%": { prefix: '1.5x/' }`
 
 
 #### options.asyncLimit
-Type: `integer`
+Type: `Integer`
 Default value: 1
 
 Increase the amount of asynchronous actions at the same time.
