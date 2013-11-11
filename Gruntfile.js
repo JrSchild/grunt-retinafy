@@ -73,13 +73,41 @@ module.exports = function(grunt) {
 					src: ['**/*.{jpg,gif,png}'],
 					dest: 'tmp/fixed_proportions'
 				}],
+			},
+			prefix_image: {
+				options: {
+					sizes: {
+						'50%':	{ prefix: '1x' },
+						'100%': { prefix: '2x' }
+					}
+				},
+				files: [{
+					expand: true,
+					cwd: 'test/default_options',
+					src: ['**/*.{jpg,gif,png}'],
+					dest: 'tmp/prefix_image'
+				}],
+			},
+			prefix_to_dir: {
+				options: {
+					sizes: {
+						'50%':	{ prefix: '1x/' },
+						'100%': { prefix: '2x/' }
+					}
+				},
+				files: [{
+					expand: true,
+					cwd: 'test/keep_structure',
+					src: ['**/*.{jpg,gif,png}'],
+					dest: 'tmp/prefix_to_dir'
+				}],
 			}
 		},
 
 		// Unit tests.
 		nodeunit: {
 			tests: ['test/*_test.js'],
-		},
+		}
 
 	});
 

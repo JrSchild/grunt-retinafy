@@ -12,6 +12,7 @@ module.exports = function(grunt) {
 	var im = require('node-imagemagick'),
 		async = require('async'),
 		path = require('path'),
+		_ = require('lodash'),
 		os = require('os'),
 		numCPUs = os.cpus().length,
 		r_percentage = /([0-9]+)%$/, // Percentage matching.
@@ -49,7 +50,7 @@ module.exports = function(grunt) {
 		for (var size in sizes) {
 			tmp.push({
 				size: size,
-				settings: sizes[size]
+				settings: _.extend({suffix: '', prefix: ''}, sizes[size])
 			});
 		}
 		return tmp;
@@ -105,29 +106,40 @@ module.exports = function(grunt) {
 			// Get file info.
 			im.identify(srcPath, function(err, features) {
 
-				// Make directory if it doesn't exist.
-				if (!grunt.file.isDir(dirName)) {
-					grunt.file.mkdir(dirName);
-				}
-
 				// For each size, resize the image.
 				async.eachSeries(options.sizes, function(size, callback) {
-					var dstPath = dirName + "/" + baseName + size.settings.suffix + extName,
+
+					var dstPath = dirName + "/",
+						prefix  = size.settings.prefix,
+						filename = baseName + size.settings.suffix + extName,
 						destImageSize = processSize(size.size, features);
+
+					// Is the prefix a dir prefix?
+					if (prefix.charAt(prefix.length - 1) === '/') {
+						dstPath += prefix;
+					} else {
+						filename = prefix + filename;
+					}
+
+					// Make directory if it doesn't exist.
+					if (!grunt.file.isDir(dstPath)) {
+						grunt.file.mkdir(dstPath);
+					}
 
 					im.resize({
 						srcPath: srcPath,
-						dstPath: dstPath,
+						dstPath: dstPath + filename,
 						format: extName.replace('.', ''),
 						width: destImageSize.width,
 						height: destImageSize.height
 					}, whenReady(callback));
+
 				}, whenReady(callback));
 			});
 		}, function (err) {
-            if (err) {
-                throw err;
-            }
+			if (err) {
+				throw err;
+			}
 
 			var message = format('Resized {0} image{1} to {2} sizes in {3} ms', [
 				this.files.length,

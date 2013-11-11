@@ -34,7 +34,8 @@
   "dependencies": {
     "grunt": "~0.4.1",
     "node-imagemagick": "~0.1.8",
-    "async": "~0.2.9"
+    "async": "~0.2.9",
+    "lodash": "~2.2.1"
   },
   "peerDependencies": {
     "grunt": "~0.4.1"
