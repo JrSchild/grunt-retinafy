@@ -48,7 +48,7 @@ The value of each item should be an object with a key suffix. The suffix will be
 
 #### options.asyncLimit
 Type: `integer`
-Default value: number of CPU's - 1
+Default value: number of CPU's - 2
 
 Grunt-retinafy tries to optimize the speed by asynchronously scaling images. You can force the program to use more than the default amount (for your system) of asynchronous actions.
 

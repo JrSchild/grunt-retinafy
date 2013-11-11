@@ -88,7 +88,7 @@ module.exports = function(grunt) {
 		var done = this.async(),
 			options = this.options({
 				sizes: {},
-				asyncLimit: numCPUs - 1 || 1
+				asyncLimit: numCPUs - 2 || 1
 			}),
 			start = Date.now();
 
