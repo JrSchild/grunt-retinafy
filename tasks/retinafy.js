@@ -70,12 +70,27 @@ module.exports = function(grunt) {
 		};
 	}
 
+	/**
+	 * Simplified from http://stackoverflow.com/questions/610406/javascript-equivalent-to-printf-string-format.
+	 * Format given string with the list of values. Works like printf
+	 * where each replacing value should be an integer.
+	 * @param  {String} string
+	 * @param  {Array} values
+	 * @return {String}
+	 */
+	function format(string, values) {
+		return string.replace(/\{(\d+)\}/g, function(match, number) {
+			return values[number];
+		});
+	}
+
 	grunt.registerMultiTask('retinafy', 'Take the 2x images and generate retina and regular versions', function() {
 		var done = this.async(),
 			options = this.options({
 				sizes: {},
 				asyncLimit: numCPUs - 1 || 1
-			});
+			}),
+			start = Date.now();
 
 		// Convert sizes to something more readable.
 		options.sizes = convertSizes(options.sizes);
@@ -109,8 +124,21 @@ module.exports = function(grunt) {
 					}, whenReady(callback));
 				}, whenReady(callback));
 			});
-		}, whenReady(done));
+		}, function (err) {
+            if (err) {
+                throw err;
+            }
 
+			var message = format('Resized {0} image{1} to {2} sizes in {3} ms', [
+				this.files.length,
+				this.files.length === 1 ? '' : 's',
+				options.sizes.length,
+				Date.now() - start
+			]);
+			grunt.log.writeln(message);
+
+            done();
+        }.bind(this));
 	});
 
 };
