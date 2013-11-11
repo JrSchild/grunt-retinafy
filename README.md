@@ -112,6 +112,7 @@ Getting the error message: `Fatal error: Cannot call method 'match' of undefined
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+* 2013-11-11   v0.1.4   By default use 1 parallel resize function at the same time. Prefix support.
 * 2013-11-09   v0.1.3   Support for fixed width and/or height.
 * 2013-10-09   v0.1.2   Use the amount of CPU's - 1 as the amount of parallel resize functions.
 * 2013-10-09   v0.1.1   Using async to manage the resize methods. Change in API, in sizes now using an object with options for this size.
