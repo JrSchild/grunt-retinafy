@@ -48,11 +48,9 @@ The value of each item should be an object with a key suffix and/or prefix. The 
 
 #### options.asyncLimit
 Type: `integer`
-Default value: number of CPU's - 2
+Default value: 1
 
-Grunt-retinafy tries to optimize the speed by asynchronously scaling images. You can force the program to use more than the default amount (for your system) of asynchronous actions.
-
-Getting the error message: `Fatal error: Cannot call method 'match' of undefined`? It's very possible that your system can't handle the amount of async actions. Try filling in a 1 in the options and slowly work your way up to the get the best performance for your system.
+Increase the amount of asynchronous actions at the same time.
 
 
 ### Usage Examples
@@ -99,6 +97,15 @@ grunt.initConfig({
   },
 })
 ```
+
+
+### Troubleshooting
+
+#### Performance
+You can drastically improve the performance by adding asyncLimit to the options. This is the number of maximum asynchronous resize actions at the same time. By default retinafy uses 1. The catch however is that not every system can handle the same (higher) amount of async actions. So you system might be able to do 7 actions at the same time, wether someone elses can only go for 2.
+
+#### Cannot call method 'match' of undefined
+Getting the error message: `Fatal error: Cannot call method 'match' of undefined`? It's very possible that your system can't handle the amount of async actions. Try removing the asyncLimit option from the settings.
 
 
 ## Contributing
