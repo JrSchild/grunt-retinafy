@@ -1,4 +1,4 @@
-# grunt-retinafy v0.1.4
+# grunt-retinafy v0.1.5
 
 > Take the 2x images and generate retina and regular versions
 
@@ -44,13 +44,6 @@ Default value: `',  '`
 An object with in each key the target size of your images. This could either be a fixed value or percentage. Possible values: `50%`, `w100`, `h80`. When both a height and width is specified (`w50h80`) the image will be scaled to it's biggest possible size inside these values without stretching it.
 
 The value of each item should be an object with a key suffix and/or prefix. The suffix will be appended to the filename before the extension. Example: `"50%": { suffix: '@1x' }`. The prefix will be prepended to the filename. If this ends with a slash, a subfolder will be created for this file. Examples: `"75%": { prefix: '1.5x' }`, `"75%": { prefix: '1.5x/' }`
-
-
-#### options.asyncLimit
-Type: `Integer`
-Default value: 1
-
-Increase the amount of asynchronous actions at the same time.
 
 
 ### Usage Examples
@@ -99,19 +92,11 @@ grunt.initConfig({
 ```
 
 
-### Troubleshooting
-
-#### Performance
-You can drastically improve the performance by adding asyncLimit to the options. This is the number of maximum asynchronous resize actions at the same time. By default retinafy uses 1. The catch however is that not every system can handle the same (higher) amount of async actions. So you system might be able to do 7 actions at the same time, wether someone elses can only go for 2.
-
-#### Cannot call method 'match' of undefined
-Getting the error message: `Fatal error: Cannot call method 'match' of undefined`? It's very possible that your system can't handle the amount of async actions. Try removing the asyncLimit option from the settings.
-
-
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+* 2013-11-21   v0.1.5   Removing asyncLimit. Was causing too many problems.
 * 2013-11-11   v0.1.4   By default use 1 parallel resize function at the same time. Prefix support.
 * 2013-11-09   v0.1.3   Support for fixed width and/or height.
 * 2013-10-09   v0.1.2   Use the amount of CPU's - 1 as the amount of parallel resize functions.

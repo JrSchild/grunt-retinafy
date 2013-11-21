@@ -88,8 +88,7 @@ module.exports = function(grunt) {
 	grunt.registerMultiTask('retinafy', 'Take the 2x images and generate retina and regular versions', function() {
 		var done = this.async(),
 			options = this.options({
-				sizes: {},
-				asyncLimit: 1
+				sizes: {}
 			}),
 			start = Date.now();
 
