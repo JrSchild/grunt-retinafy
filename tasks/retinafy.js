@@ -97,7 +97,7 @@ module.exports = function(grunt) {
 		options.sizes = convertSizes(options.sizes);
 
 		// For each file asynchronously read it and do other stuff.
-		async.eachLimit(this.files, options.asyncLimit, function(f, callback) {
+		async.eachSeries(this.files, function(f, callback) {
 			var extName = path.extname(f.dest),
 				srcPath = f.src[0],
 				dirName = path.dirname(f.dest),
