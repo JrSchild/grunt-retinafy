@@ -104,6 +104,9 @@ module.exports = function(grunt) {
 
 			// Get file info.
 			im.identify(srcPath, function(err, features) {
+				if (err) {
+					throw err;
+				}
 
 				// For each size, resize the image.
 				async.eachSeries(options.sizes, function(size, callback) {
